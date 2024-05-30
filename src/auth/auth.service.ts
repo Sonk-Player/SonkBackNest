@@ -31,13 +31,13 @@ export class AuthService {
     // Check if email already exists
     const existingEmail = await this.userModel.findOne({ email });
     if (existingEmail) {
-      throw new BadRequestException(`Email ${email} already exists!`);
+      throw new BadRequestException(`${email} no esta disponible`);
     }
 
     // Check if username already exists
     const existingUsername = await this.userModel.findOne({ username });
     if (existingUsername) {
-      throw new BadRequestException(`Username ${username} already exists!`);
+      throw new BadRequestException(`${username} no esta disponible`);
     }
 
     try {
@@ -75,12 +75,12 @@ export class AuthService {
     // Verificar que el email coincide con el de la BD
     const user = await this.userModel.findOne({ email });
     if (!user) {
-      throw new UnauthorizedException('No valid credentials - email');
+      throw new UnauthorizedException('Email o contraseña icorrectos');
     }
 
     // Comparo la contraseña del usuario con la contraseña de la BD
     if (!bycryptjs.compareSync(password, user.password)) {
-      throw new UnauthorizedException('No valid credentials - password');
+      throw new UnauthorizedException('Email o contraseña icorrectos');
     }
 
     const { password: _, ...rest } = user.toJSON();
