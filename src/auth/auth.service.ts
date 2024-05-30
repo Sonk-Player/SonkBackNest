@@ -31,13 +31,13 @@ export class AuthService {
     // Check if email already exists
     const existingEmail = await this.userModel.findOne({ email });
     if (existingEmail) {
-      throw new BadRequestException(`${email} no esta disponible`);
+      throw new BadRequestException('existing email');
     }
 
     // Check if username already exists
     const existingUsername = await this.userModel.findOne({ username });
     if (existingUsername) {
-      throw new BadRequestException(`${username} no esta disponible`);
+      throw new BadRequestException('existing username');
     }
 
     try {
