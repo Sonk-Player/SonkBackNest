@@ -28,16 +28,16 @@ export class AuthService {
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { username, email } = createUserDto;
 
-    // Check if email already exists
-    const existingEmail = await this.userModel.findOne({ email });
-    if (existingEmail) {
-      throw new BadRequestException('existing email');
-    }
-
     // Check if username already exists
     const existingUsername = await this.userModel.findOne({ username });
     if (existingUsername) {
-      throw new BadRequestException('existing username');
+      throw new UnauthorizedException('username');
+    }
+
+    // Check if email already exists
+    const existingEmail = await this.userModel.findOne({ email });
+    if (existingEmail) {
+      throw new UnauthorizedException('email');
     }
 
     try {
