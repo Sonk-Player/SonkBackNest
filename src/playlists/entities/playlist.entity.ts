@@ -7,7 +7,7 @@ export class Playlist {
     PlaylistId?: string;
 
     @Prop()
-    idUser: string;
+    userId: string;
 
     @Prop()
     img: string;

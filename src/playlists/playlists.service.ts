@@ -39,7 +39,7 @@ export class PlaylistsService {
 
     return {
       playlistId: song.PlaylistId,
-      userId: song.idUser,
+      userId: song.userId,
       img: song.img,
       title: song.title,
       artist: song.artist,
