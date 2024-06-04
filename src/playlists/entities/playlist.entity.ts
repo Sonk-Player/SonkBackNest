@@ -4,7 +4,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 export class Playlist {
 
     @Prop()
-    PlaylistId?: string;
+    PlaylistId: string;
 
     @Prop()
     userId: string;
