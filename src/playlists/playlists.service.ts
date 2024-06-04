@@ -48,12 +48,8 @@ export class PlaylistsService {
 
   async createSong(createSongDto: CreateSongDto): Promise<Playlist> {
     try {
-      const songData = {
-        ...createSongDto,
-        playlistId: this.generatePlaylistId(), 
-      };
 
-      const newSong = new this.playlistModel(songData);
+      const newSong = new this.playlistModel(createSongDto);
 
       await newSong.save();
 
