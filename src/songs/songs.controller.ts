@@ -25,10 +25,10 @@ export class SongsController {
     return this.songsService.getSongs(user);
   }
 
-  // @Get()
-  // findAll() {
-  //   return this.songsService.findAll();
-  // }
+  @Get()
+  findAll() {
+    return this.songsService.findAll();
+  }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {
