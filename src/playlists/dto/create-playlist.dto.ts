@@ -8,16 +8,4 @@ export class CreatePlaylistDto {
 
     @IsString()
     playlistName: string;
-
-    @IsString()
-    img: string;
-
-    @IsString()
-    title: string;
-
-    @IsString()
-    artist: string;
-
-    @IsString()
-    duration: string;
 }
