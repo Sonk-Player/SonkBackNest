@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Request } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
+import { User } from 'src/auth/entities/user.entity';
 
 @Controller('songs')
 export class SongsController {
@@ -13,23 +14,32 @@ export class SongsController {
     return this.songsService.createSong(createSongDto);
   }
 
-  @Get()
-  findAll() {
-    return this.songsService.findAll();
+  @Get('load-songs')
+  getSongs(@Request() req: Request) {
+    const user = req['user'] as User;
+    if (!user) {
+      throw new Error('User not found in request');
+    }
+    return this.songsService.getSongs(user);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.songsService.findOne(+id);
-  }
+  // @Get()
+  // findAll() {
+  //   return this.songsService.findAll();
+  // }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSongDto: UpdateSongDto) {
-    return this.songsService.update(+id, updateSongDto);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.songsService.findOne(+id);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.songsService.remove(+id);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateSongDto: UpdateSongDto) {
+  //   return this.songsService.update(+id, updateSongDto);
+  // }
+
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.songsService.remove(+id);
+  // }
 }

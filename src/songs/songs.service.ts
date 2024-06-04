@@ -5,6 +5,7 @@ import { Song } from './entities/song.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { SongResponse } from './interfaces/song-response';
 import { Model } from 'mongoose';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class SongsService {
@@ -38,6 +39,28 @@ export class SongsService {
       title: song.title,
       artist: song.artist,
       duration: song.duration
+    }
+  }
+
+  async getSongs(user: User): Promise<SongResponse[]> {
+    try {
+      if (!user) {
+        throw new Error('User is undefined');
+      }
+      console.log(`Fetching songs for user: ${user._id}`);
+      const songs: Song[] = await this.songModel.find({ userId: user._id }).exec();
+      return songs.map((song: Song) => ({
+        playlistId: song.playlistId,
+        userId: song.userId,
+        videoId: song.videoId,
+        img: song.img,
+        title: song.title,
+        artist: song.artist,
+        duration: song.duration
+      }));
+    } catch (error) {
+      console.error(error);
+      throw error;
     }
   }
 

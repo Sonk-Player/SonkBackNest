@@ -13,24 +13,29 @@ export class PlaylistsController {
     return this.playlistsService.createPlaylist(createPlaylistDto);
   }
 
-
-  @Get()
+  @Get('/all-playlists')
   findAll() {
     return this.playlistsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.playlistsService.findOne(+id);
-  }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePlaylistDto: UpdatePlaylistDto) {
-    return this.playlistsService.update(+id, updatePlaylistDto);
-  }
+  // @Get()
+  // findAll() {
+  //   return this.playlistsService.findAll();
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.playlistsService.remove(+id);
-  }
+  // @Get(':id')
+  // findOne(@Param('id') id: string) {
+  //   return this.playlistsService.findOne(+id);
+  // }
+
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updatePlaylistDto: UpdatePlaylistDto) {
+  //   return this.playlistsService.update(+id, updatePlaylistDto);
+  // }
+
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.playlistsService.remove(+id);
+  // }
 }
