@@ -17,7 +17,7 @@ export class PlaylistsService {
     try {
       const playlistData = {
         ...createPlaylistDto,
-        taskId: this.generatePlaylistId(), 
+        playlistId: this.generatePlaylistId(), 
       };
 
       const newPlaylist = new this.playlistModel(playlistData);
@@ -40,6 +40,7 @@ export class PlaylistsService {
     return {
       playlistId: song.playlistId,
       userId: song.userId,
+      playlistName: song.playlistName,
       img: song.img,
       title: song.title,
       artist: song.artist,

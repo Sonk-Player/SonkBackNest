@@ -7,6 +7,9 @@ export class CreatePlaylistDto {
     userId: string;
 
     @IsString()
+    playlistName: string;
+
+    @IsString()
     img: string;
 
     @IsString()
