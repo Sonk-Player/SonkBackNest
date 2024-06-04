@@ -9,9 +9,6 @@ export class CreateSongDto {
     userId: string;
 
     @IsString()
-    playlistName: string;
-
-    @IsString()
     img: string;
 
     @IsString()
