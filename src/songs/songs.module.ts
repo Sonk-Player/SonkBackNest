@@ -4,6 +4,7 @@ import { SongsController } from './songs.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Song, SongSchema } from './entities/song.entity';
 import { AuthModule } from 'src/auth/auth.module';
+import { User, UserSchema } from 'src/auth/entities/user.entity';
 
 @Module({
   controllers: [SongsController],
@@ -14,6 +15,10 @@ import { AuthModule } from 'src/auth/auth.module';
       {
         name: Song.name,
         schema: SongSchema
+      },
+      {
+        name: User.name,
+        schema: UserSchema
       }
     ]),
   ],
