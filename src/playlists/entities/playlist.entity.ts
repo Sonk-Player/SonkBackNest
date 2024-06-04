@@ -3,8 +3,8 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 @Schema()
 export class Playlist {
 
-    @Prop()
-    PlaylistId: string;
+    @Prop({ unique: true})
+    playlistId: string;
 
     @Prop()
     userId: string;

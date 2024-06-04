@@ -38,7 +38,7 @@ export class PlaylistsService {
     const song = await this.createPlaylist(createPlaylistDto);
 
     return {
-      playlistId: song.PlaylistId,
+      playlistId: song.playlistId,
       userId: song.userId,
       img: song.img,
       title: song.title,
