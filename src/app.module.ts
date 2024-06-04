@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 import { AuthModule } from './auth/auth.module';
 import { PlaylistsModule } from './playlists/playlists.module';
+import { SongsModule } from './songs/songs.module';
 
 @Module({
   imports: [
@@ -13,6 +14,8 @@ import { PlaylistsModule } from './playlists/playlists.module';
     AuthModule,
 
     PlaylistsModule,
+
+    SongsModule,
   ],
   controllers: [],
   providers: [],

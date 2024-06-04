@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { PlaylistsService } from './playlists.service';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
-import { CreateSongDto } from './dto/create-song.dto';
+import { CreateSongDto } from '../songs/dto/create-song.dto';
 
 @Controller('playlists')
 export class PlaylistsController {
@@ -13,10 +13,6 @@ export class PlaylistsController {
     return this.playlistsService.createPlaylist(createPlaylistDto);
   }
 
-  @Post('/add-song')
-  newSong(@Body() createSongDto: CreateSongDto) {
-    return this.playlistsService.createSong(createSongDto);
-  }
 
   @Get()
   findAll() {

@@ -9,6 +9,9 @@ export class CreateSongDto {
     userId: string;
 
     @IsString()
+    videoId: string;
+
+    @IsString()
     img: string;
 
     @IsString()

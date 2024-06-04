@@ -1,16 +1,13 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 @Schema()
-export class Playlist {
+export class Song {
 
-    @Prop({ unique: true, required: true})
+    @Prop({ required: true })
     playlistId: string;
 
     @Prop()
     userId: string;
-
-    @Prop({ required: true})
-    playlistName: string;
 
     @Prop()
     videoId: string;
@@ -29,4 +26,4 @@ export class Playlist {
 
 }
 
-export const PlaylistSchema = SchemaFactory.createForClass( Playlist )
+export const SongSchema = SchemaFactory.createForClass( Song )
