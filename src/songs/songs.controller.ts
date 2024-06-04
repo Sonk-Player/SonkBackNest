@@ -25,7 +25,7 @@ export class SongsController {
     return this.songsService.getSongs(user);
   }
 
-  @Get('/all')
+  @Get()
   findAll() {
     return this.songsService.findAll();
   }

@@ -50,8 +50,14 @@ export class PlaylistsService {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   }
 
-  findAll() {
-    return `This action returns all playlists`;
+  async findAll(): Promise<Playlist[]> {
+    try {
+      const playlists = await this.playlistModel.find().exec();
+      return playlists;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   findOne(id: number) {
