@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Request, UseGuards } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
 import { User } from 'src/auth/entities/user.entity';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('songs')
 export class SongsController {
@@ -14,6 +15,7 @@ export class SongsController {
     return this.songsService.createSong(createSongDto);
   }
 
+  @UseGuards(AuthGuard)
   @Get('/load-songs')
   getSongs(@Request() req: Request) {
     const user = req['user'] as User;
