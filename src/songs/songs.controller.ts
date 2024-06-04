@@ -14,7 +14,7 @@ export class SongsController {
     return this.songsService.createSong(createSongDto);
   }
 
-  @Get('load-songs')
+  @Get('/load-songs')
   getSongs(@Request() req: Request) {
     const user = req['user'] as User;
     if (!user) {
