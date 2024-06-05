@@ -19,7 +19,7 @@ export class PlaylistsController {
     if (!user) {
       throw new Error('User not found in request');
     }
-    return this.playlistsService.findById(user._id);
+    return this.playlistsService.findById(user);
   }
 
   @Get('/all-playlists')

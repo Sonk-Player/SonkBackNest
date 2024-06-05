@@ -5,6 +5,7 @@ import { PlaylistResponse } from './interfaces/playlist-response';
 import { Playlist } from './entities/playlist.entity';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { User } from 'src/auth/entities/user.entity';
 
 @Injectable()
 export class PlaylistsService {
@@ -60,9 +61,9 @@ export class PlaylistsService {
     }
   }
 
-  async findById(id: string): Promise<Playlist> {
+  async findById(user: User): Promise<Playlist> {
     try {
-      const playlist = await this.playlistModel.findOne({ userId : id }).exec();
+      const playlist = await this.playlistModel.findOne({ userId : user._id }).exec();
       return playlist;
     } catch (error) {
       console.error(error);
