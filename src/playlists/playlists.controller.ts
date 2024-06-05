@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Request, Patch, Param, Delete } from '@nestjs/common';
 import { PlaylistsService } from './playlists.service';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { User } from 'src/auth/entities/user.entity';
@@ -14,7 +14,11 @@ export class PlaylistsController {
 
 
   @Get('/find-by-user-id')
-  findByUserId(@Body() user: User) {
+  findByUserId(@Request() req: Request) {
+    const user = req['user'] as User;
+    if (!user) {
+      throw new Error('User not found in request');
+    }
     return this.playlistsService.findById(user._id);
   }
 
