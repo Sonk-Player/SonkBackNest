@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Request, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Request, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { PlaylistsService } from './playlists.service';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
 import { User } from 'src/auth/entities/user.entity';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('playlists')
 export class PlaylistsController {
@@ -12,7 +13,7 @@ export class PlaylistsController {
     return this.playlistsService.createPlaylist(createPlaylistDto);
   }
 
-
+  @UseGuards(AuthGuard)
   @Get('/find-by-user-id')
   findByUserId(@Request() req: Request) {
     const user = req['user'] as User;
