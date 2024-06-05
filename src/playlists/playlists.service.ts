@@ -61,14 +61,14 @@ export class PlaylistsService {
     }
   }
 
-  async findById(user: User): Promise<PlaylistResponse> {
+  async findById(user: User): Promise<PlaylistResponse[]> {
     try {
       const playlist: Playlist[] = await this.playlistModel.find({ userId: user._id }).exec();
       return playlist.map((playlist: Playlist) => ({
         playlistId: playlist.playlistId,
         userId: playlist.userId,
         playlistName: playlist.playlistName,
-        }))[0];
+        }));
     } catch (error) {
       console.error(error);
       throw error;
