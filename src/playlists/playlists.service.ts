@@ -60,6 +60,16 @@ export class PlaylistsService {
     }
   }
 
+  async findById(id: string): Promise<Playlist> {
+    try {
+      const playlist = await this.playlistModel.findOne({ userId : id }).exec();
+      return playlist;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} playlist`;
   }

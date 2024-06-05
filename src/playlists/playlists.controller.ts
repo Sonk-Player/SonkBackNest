@@ -1,8 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { PlaylistsService } from './playlists.service';
 import { CreatePlaylistDto } from './dto/create-playlist.dto';
-import { UpdatePlaylistDto } from './dto/update-playlist.dto';
-import { CreateSongDto } from '../songs/dto/create-song.dto';
+import { User } from 'src/auth/entities/user.entity';
 
 @Controller('playlists')
 export class PlaylistsController {
@@ -11,6 +10,12 @@ export class PlaylistsController {
   @Post('/new-playlist')
   newPlaylist(@Body() createPlaylistDto: CreatePlaylistDto) {
     return this.playlistsService.createPlaylist(createPlaylistDto);
+  }
+
+
+  @Get('/find-by-user-id')
+  findByUserId(@Body() user: User) {
+    return this.playlistsService.findById(user._id);
   }
 
   @Get('/all-playlists')
