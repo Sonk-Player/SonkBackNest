@@ -6,26 +6,11 @@ export class Playlist {
     @Prop({ unique: true, required: true})
     playlistId: string;
 
-    @Prop()
+    @Prop({ required: true })
     userId: string;
 
     @Prop({ required: true})
     playlistName: string;
-
-    @Prop()
-    videoId: string;
-
-    @Prop()
-    img: string;
-
-    @Prop()
-    title: string;
-
-    @Prop()
-    artist: string;
-
-    @Prop()
-    duration: string;
 
 }
 
