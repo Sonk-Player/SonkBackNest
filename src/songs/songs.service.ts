@@ -42,13 +42,35 @@ export class SongsService {
     }
   }
 
-  async getSongs(user: User): Promise<SongResponse[]> {
+  async findById(user: User): Promise<SongResponse[]> {
     try {
       if (!user) {
         throw new Error('User is undefined');
       }
       console.log(`Fetching songs for user: ${user._id}`);
       const songs: Song[] = await this.songModel.find({ userId: user._id }).exec();
+      return songs.map((song: Song) => ({
+        playlistId: song.playlistId,
+        userId: song.userId,
+        videoId: song.videoId,
+        img: song.img,
+        title: song.title,
+        artist: song.artist,
+        duration: song.duration
+      }));
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
+  async findPlaylistsSongsById(user: User, playlistId: string): Promise<SongResponse[]> {
+    try {
+      if (!user) {
+        throw new Error('User is undefined');
+      }
+      console.log(`Fetching songs for user: ${user._id} and playlist: ${playlistId}`);
+      const songs: Song[] = await this.songModel.find({ userId: user._id, playlistId: playlistId }).exec();
       return songs.map((song: Song) => ({
         playlistId: song.playlistId,
         userId: song.userId,

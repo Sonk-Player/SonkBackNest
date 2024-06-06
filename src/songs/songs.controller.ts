@@ -17,12 +17,22 @@ export class SongsController {
 
   @UseGuards(AuthGuard)
   @Get('/load-songs')
-  getSongs(@Request() req: Request) {
+  getSongsByUser(@Request() req: Request) {
     const user = req['user'] as User;
     if (!user) {
       throw new Error('User not found in request');
     }
-    return this.songsService.getSongs(user);
+    return this.songsService.findById(user);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('/load-songs-by-playlists')
+  getPlaylistsSongsByUser(@Request() req: Request, @Body() playlistId: string) {
+    const user = req['user'] as User;
+    if (!user) {
+      throw new Error('User not found in request');
+    }
+    return this.songsService.findPlaylistsSongsById(user, playlistId);
   }
 
   @Get()
