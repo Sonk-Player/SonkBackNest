@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Request, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Request, UseGuards, Query } from '@nestjs/common';
 import { SongsService } from './songs.service';
 import { CreateSongDto } from './dto/create-song.dto';
 import { UpdateSongDto } from './dto/update-song.dto';
@@ -25,15 +25,15 @@ export class SongsController {
     return this.songsService.findById(user);
   }
 
-  @UseGuards(AuthGuard)
-  @Get('/load-songs-by-playlists')
-  getPlaylistsSongsByUser(@Request() req: Request, @Body() playlistId: string) {
-    const user = req['user'] as User;
-    if (!user) {
-      throw new Error('User not found in request');
-    }
-    return this.songsService.findPlaylistsSongsById(user, playlistId);
+@UseGuards(AuthGuard)
+@Get('/load-playlist-songs')
+getPlaylistsSongsByUser(@Request() req: Request, @Query('playlistId') playlistId: string) {
+  const user = req['user'] as User;
+  if (!user) {
+    throw new Error('User not found in request');
   }
+  return this.songsService.findById(user);
+}
 
   @Get()
   findAll() {
