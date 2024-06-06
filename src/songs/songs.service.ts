@@ -13,27 +13,31 @@ export class SongsService {
     @InjectModel(Song.name) private songModel: Model<Song>
   ) { }
 
-  async createSong(createSongDto: CreateSongDto): Promise<Song> {
-    try {
-      // Buscar si la canción ya existe en la base de datos
-      const existingSong = await this.songModel.findOne({ videoId: createSongDto.videoId });
-      // Si la canción ya existe, lanzar un error
-      if (existingSong) {
-        throw new Error('La canción ya está en la lista de reproducción');
-      }
+async createSong(createSongDto: CreateSongDto): Promise<Song> {
+  try {
+    // Buscar si la canción ya existe en la lista de reproducción del usuario
+    const existingSong = await this.songModel.findOne({ 
+      videoId: createSongDto.videoId, 
+      playlistId: createSongDto.playlistId 
+    });
 
-      // Si la canción no existe, crear una nueva
-      const newSong = new this.songModel(createSongDto);
-
-      await newSong.save();
-
-      return newSong;
-
-    } catch (error) {
-      console.error(error);
-      throw error;
+    // Si la canción ya existe, lanzar un error
+    if (existingSong) {
+      throw new Error('La canción ya está en la lista de reproducción');
     }
+
+    // Si la canción no existe, crear una nueva
+    const newSong = new this.songModel(createSongDto);
+
+    await newSong.save();
+
+    return newSong;
+
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
+}
 
   async addSong(createSongDto: CreateSongDto): Promise<SongResponse> {
 
