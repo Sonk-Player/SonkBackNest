@@ -11,10 +11,19 @@ import { User } from 'src/auth/entities/user.entity';
 export class SongsService {
   constructor(
     @InjectModel(Song.name) private songModel: Model<Song>
-  ) {}
+  ) { }
+
   async createSong(createSongDto: CreateSongDto): Promise<Song> {
     try {
+      // Buscar si la canción ya existe en la base de datos
+      const existingSong = await this.songModel.findById(createSongDto.videoId);
 
+      // Si la canción ya existe, lanzar un error
+      if (existingSong) {
+        throw new Error('La canción ya está en la lista de reproducción');
+      }
+
+      // Si la canción no existe, crear una nueva
       const newSong = new this.songModel(createSongDto);
 
       await newSong.save();
@@ -22,8 +31,8 @@ export class SongsService {
       return newSong;
 
     } catch (error) {
-      console.error(error); 
-      throw error; 
+      console.error(error);
+      throw error;
     }
   }
 
@@ -85,6 +94,8 @@ export class SongsService {
       throw error;
     }
   }
+
+
 
   findAll() {
     return `This action returns all songs`;

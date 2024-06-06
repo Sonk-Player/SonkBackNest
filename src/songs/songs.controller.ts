@@ -32,7 +32,7 @@ getPlaylistsSongsByUser(@Request() req: Request, @Query('playlistId') playlistId
   if (!user) {
     throw new Error('User not found in request');
   }
-  return this.songsService.findById(user);
+  return this.songsService.findPlaylistsSongsById(user, playlistId);
 }
 
   @Get()
