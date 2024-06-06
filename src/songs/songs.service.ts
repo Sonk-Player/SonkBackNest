@@ -16,8 +16,7 @@ export class SongsService {
   async createSong(createSongDto: CreateSongDto): Promise<Song> {
     try {
       // Buscar si la canción ya existe en la base de datos
-      const existingSong = await this.songModel.findById(createSongDto.videoId);
-
+      const existingSong = await this.songModel.findOne({ videoId: createSongDto.videoId });
       // Si la canción ya existe, lanzar un error
       if (existingSong) {
         throw new Error('La canción ya está en la lista de reproducción');
