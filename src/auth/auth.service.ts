@@ -91,6 +91,23 @@ export class AuthService {
     };
   }
 
+  async loginWithGoogle(loginDto: LoginDto): Promise<LoginResponse> {
+    const { email } = loginDto;
+
+    // Verificar que el email coincide con el de la BD
+    const user = await this.userModel.findOne({ email });
+    if (!user) {
+      throw new UnauthorizedException('Email icorrecto');
+    }
+
+    const userGoogle = user.toJSON();
+
+    return {
+      user: userGoogle,
+      token: this.getJwtToken({ id: user.id }),
+    };
+  }
+
   async findUserById(id: string) {
     const user = await this.userModel.findById(id);
     const { password, ...rest } = user.toJSON();
