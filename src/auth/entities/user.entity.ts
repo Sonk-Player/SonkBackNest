@@ -17,6 +17,9 @@ export class User {
     @Prop({ minlength: 6, required: true })
     password?: string;
 
+    @Prop({ default: false })
+    isGoogle: boolean;
+
     @Prop({ default: true })
     isActive: boolean;
 
