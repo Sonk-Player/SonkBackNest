@@ -15,7 +15,6 @@ import { User } from './entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './interfaces/jwt-payload';
 import { LoginResponse } from './interfaces/login-response';
-import { OAuth2Client } from 'google-auth-library';
 
 @Injectable()
 export class AuthService {
@@ -24,7 +23,7 @@ export class AuthService {
     private userModel: Model<User>,
 
     private jwtService: JwtService,
-  ) { }
+  ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { username, email } = createUserDto;
@@ -92,24 +91,27 @@ export class AuthService {
     };
   }
 
-  async validateGoogleToken(token: string) {
-    const client_id = process.env.CLIENT_ID;
-    const client = new OAuth2Client(client_id);
+async loginWithGoogle(loginDto: LoginDto): Promise<LoginResponse> {
+  const { email } = loginDto;
 
-    try {
-      const verify = await client.verifyIdToken({
-        idToken: token,
-        audience: client_id,
-      });
-
-      const user = verify.getPayload();
-
-      return user;
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
+  // Verificar que el email coincide con el de la BD
+  const user = await this.userModel.findOne({ email });
+  if (!user) {
+    throw new UnauthorizedException('El email proporcionado no está asociado a ninguna cuenta de Google');
   }
+
+  // Verificar que el usuario se autenticó con Google
+  if (!user.isGoogle) {
+    throw new UnauthorizedException('El usuario no se autenticó con Google');
+  }
+
+  const { password: _, ...rest } = user.toJSON();
+
+  return {
+    user: rest,
+    token: this.getJwtToken({ id: user.id }),
+  };
+}
 
   async findUserById(id: string) {
     const user = await this.userModel.findById(id);
@@ -138,13 +140,5 @@ export class AuthService {
     const token = this.jwtService.sign(payload);
 
     return token;
-  }
-
-  getJWTGoogleToken(user: any) {
-    const payload = { email: user.email, username: user.name, id: user.id};
-    const accessToken = this.jwtService.sign(payload, {secret: process.env.JWT_SEED, expiresIn: '1h'});
-
-    return accessToken;
-
   }
 }

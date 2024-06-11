@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, Request, Delete, Param, HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Request, Delete, Param, HttpException, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 import { CreateUserDto, LoginDto, RegisterDto } from './dto';
@@ -22,17 +22,8 @@ export class AuthController {
   }
 
   @Post('/google-login')
-  async loginWithGoogle(@Body() data: any) {
-    const dataUser = await this.authService.validateGoogleToken(data.token);
-
-    if(!dataUser) {
-      throw new UnauthorizedException('Invalid token');
-    }
-    console.log(dataUser);
-
-    const accessToken = this.authService.getJWTGoogleToken(dataUser);
-
-    return {token: accessToken};
+  loginWithGoogle(@Body() loginDto: LoginDto) {
+    return this.authService.loginWithGoogle(loginDto);
   }
 
   @Post('/register')
