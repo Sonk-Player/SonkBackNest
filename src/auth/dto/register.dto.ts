@@ -1,4 +1,4 @@
-import { IsEmail, IsString, MinLength } from "class-validator";
+import { IsBoolean, IsEmail, IsString, MinLength } from "class-validator";
 
 export class RegisterDto {
 
@@ -11,7 +11,7 @@ export class RegisterDto {
     @MinLength(6)
     password: string;
 
-    @IsString()
+    @IsBoolean()
     isGoogle: boolean;
 
 }
