@@ -91,27 +91,27 @@ export class AuthService {
     };
   }
 
-async loginWithGoogle(loginDto: LoginDto): Promise<LoginResponse> {
-  const { email } = loginDto;
+// async loginWithGoogle(loginDto: LoginDto): Promise<LoginResponse> {
+//   const { email, password } = loginDto;
 
-  // Verificar que el email coincide con el de la BD
-  const user = await this.userModel.findOne({ email });
-  if (!user) {
-    throw new UnauthorizedException('El email proporcionado no está asociado a ninguna cuenta de Google');
-  }
+//   // Verificar que el email coincide con el de la BD
+//   const user = await this.userModel.findOne({ email });
+//   if (!user) {
+//     throw new UnauthorizedException('El email proporcionado no está asociado a ninguna cuenta de Google');
+//   }
 
-  // Verificar que el usuario se autenticó con Google
-  if (!user.isGoogle) {
-    throw new UnauthorizedException('El usuario no se autenticó con Google');
-  }
+//   // Verificar que el usuario se autenticó con Google
+//   if (!user.isGoogle) {
+//     throw new UnauthorizedException('El usuario no se autenticó con Google');
+//   }
 
-  const { password: _, ...rest } = user.toJSON();
+//   const { password: _, ...rest } = user.toJSON();
 
-  return {
-    user: rest,
-    token: this.getJwtToken({ id: user.id }),
-  };
-}
+//   return {
+//     user: rest,
+//     token: this.getJwtToken({ id: user.id }),
+//   };
+// }
 
   async findUserById(id: string) {
     const user = await this.userModel.findById(id);
