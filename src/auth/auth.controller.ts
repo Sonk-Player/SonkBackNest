@@ -21,10 +21,10 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  // @Post('/google-login')
-  // loginWithGoogle(@Body() loginDto: LoginDto) {
-  //   return this.authService.loginWithGoogle(loginDto);
-  // }
+  @Post('/google-auth')
+  loginWithGoogle(@Body() data: RegisterDto) {
+    return this.authService.saveGoogleUserDB(data)
+  }
 
   @Post('/register')
   register(@Body() registerDto: RegisterDto) {

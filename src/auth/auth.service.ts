@@ -15,6 +15,7 @@ import { User } from './entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './interfaces/jwt-payload';
 import { LoginResponse } from './interfaces/login-response';
+import { OAuth2Client } from 'google-auth-library';
 
 @Injectable()
 export class AuthService {
@@ -92,28 +93,34 @@ export class AuthService {
     };
   }
 
-// async loginWithGoogle(loginDto: LoginDto): Promise<LoginResponse> {
-//   const { email, password } = loginDto;
+  //! Google Auth
+  async validateToken(token: string) {
+    const clientId = process.env.CLIENT_ID;
+    const client = new OAuth2Client(clientId);
+    
+    try {
+      const verify = await client.verifyIdToken({
+        idToken: token,
+        audience: clientId
+      });
+      const user = verify.getPayload();
+      return user
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 
-//   // Verificar que el email coincide con el de la BD
-//   const user = await this.userModel.findOne({ email });
-//   if (!user) {
-//     throw new UnauthorizedException('El email proporcionado no está asociado a ninguna cuenta de Google');
-//   }
+  async saveGoogleUserDB(registerDto: RegisterDto): Promise<LoginResponse> {
+    const user = await this.create(registerDto);
 
-//   // Verificar que el usuario se autenticó con Google
-//   if (!user.isGoogle) {
-//     throw new UnauthorizedException('El usuario no se autenticó con Google');
-//   }
+    return {
+      user: user,
+      token: this.getJwtToken({ id: user._id }),
+    };
+  }
 
-//   const { password: _, ...rest } = user.toJSON();
-
-//   return {
-//     user: rest,
-//     token: this.getJwtToken({ id: user.id }),
-//   };
-// }
-
+  //!##########################
   async findUserById(id: string) {
     const user = await this.userModel.findById(id);
     const { password, ...rest } = user.toJSON();
