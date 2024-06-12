@@ -65,7 +65,7 @@ export class AuthService {
 
     return {
       user: user,
-      token: this.getJwtToken({ id: user._id }),
+      token: this.getJwtToken(RegisterDto),
     };
   }
 
@@ -88,7 +88,7 @@ export class AuthService {
     console.log('rest', rest);
     return {
       user: rest,
-      token: this.getJwtToken({ id: user.id }),
+      token: this.getJwtToken(LoginDto),
     };
   }
 
@@ -115,7 +115,7 @@ export class AuthService {
 
     return {
       user: user,
-      token: this.getJwtToken({ id: user._id }),
+      token: this.getJwtToken(registerDto),
     };
   }
 

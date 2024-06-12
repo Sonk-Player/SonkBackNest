@@ -48,17 +48,17 @@ export class AuthController {
     return this.authService.findAll();
   }
 
-  // @UseGuards(AuthGuard)
-  // @Get('check-token')
-  // checkToken(@Request() req: Request): LoginResponse{
-  //   const user = req['user'] as User;
+  @UseGuards(AuthGuard)
+  @Get('check-token')
+  checkToken(@Request() req: Request): LoginResponse{
+    const user = req['user'] as User;
     
 
-  //   return  {
-  //     user,
-  //     token: this.authService.getJwtToken({id: user._id})
-  //   }
-  // }
+    return  {
+      user,
+      token: this.authService.getJwtToken(user)
+    }
+  }
 
 
 
