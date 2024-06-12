@@ -25,34 +25,40 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-async create(createUserDto: CreateUserDto): Promise<User> {
-  const { username, email } = createUserDto;
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const { username, email } = createUserDto;
 
-  // Check if username already exists
-  const existingUsername = await this.userModel.findOne({ username });
-  if (existingUsername) {
-    throw new UnauthorizedException('username');
+    // Check if username already exists
+    const existingUsername = await this.userModel.findOne({ username });
+    if (existingUsername) {
+      throw new UnauthorizedException('username');
+    }
+
+    // Check if email already exists
+    const existingEmail = await this.userModel.findOne({ email });
+    if (existingEmail) {
+      throw new UnauthorizedException('email');
+    }
+
+    try {
+      // Encrypt password
+      const { password, ...userData } = createUserDto;
+
+      const newUser = new this.userModel({
+        password: bycryptjs.hashSync(password, 10),
+        ...userData,
+      });
+
+      await newUser.save();
+
+      const { password: _, ...user } = newUser.toJSON();
+
+      return user;
+    } catch (error) {
+      console.log(error);
+      throw new InternalServerErrorException('Something terrible happened!');
+    }
   }
-
-  // Check if email already exists
-  const existingEmail = await this.userModel.findOne({ email });
-  if (existingEmail) {
-    throw new UnauthorizedException('email');
-  }
-
-  try {
-    const newUser = new this.userModel(createUserDto);
-
-    await newUser.save();
-
-    const { password: _, ...user } = newUser.toJSON();
-
-    return user;
-  } catch (error) {
-    console.log(error);
-    throw new InternalServerErrorException('Something terrible happened!');
-  }
-}
 
   async register(registerDto: RegisterDto): Promise<LoginResponse> {
     const user = await this.create(registerDto);
