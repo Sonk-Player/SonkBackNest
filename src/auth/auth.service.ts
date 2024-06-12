@@ -22,7 +22,6 @@ export class AuthService {
   constructor(
     @InjectModel(User.name)
     private userModel: Model<User>,
-
     private jwtService: JwtService,
   ) {}
 
@@ -144,8 +143,15 @@ export class AuthService {
     return `This action removes a #${id} auth`;
   }
 
-  getJwtToken(payload: JwtPayload) {
-    const token = this.jwtService.sign(payload);
+  // getJwtToken(payload: JwtPayload) {
+  //   const token = this.jwtService.sign(payload);
+
+  //   return token;
+  // }
+
+  getJwtToken(user: any) {
+    const payload = { email: user.email, username: user.username, sub: user.id };
+    const token = this.jwtService.sign(payload, {secret: process.env.JWT_SECRET, expiresIn: '1h'});
 
     return token;
   }

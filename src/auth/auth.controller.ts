@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, UseGuards, Request, Delete, Param, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Request, Delete, Param, HttpException, HttpStatus, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
 import { CreateUserDto, LoginDto, RegisterDto } from './dto';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginResponse } from './interfaces/login-response';
 import { User } from './entities/user.entity';
+import { access } from 'fs';
 
 @Controller('auth')
 export class AuthController {
@@ -22,8 +23,17 @@ export class AuthController {
   }
 
   @Post('/google-auth')
-  loginWithGoogle(@Body() data: RegisterDto) {
-    return this.authService.saveGoogleUserDB(data)
+  loginWithGoogle(@Body() data: any) {
+    const dataUser = this.authService.validateToken(data.token);
+    if(!dataUser) {
+      throw new UnauthorizedException();
+    }
+
+    this.authService.saveGoogleUserDB(data);
+
+    const accessToken = this.authService.getJwtToken(dataUser);
+    
+    return {token: accessToken}
   }
 
   @Post('/register')
